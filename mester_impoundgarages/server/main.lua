@@ -90,7 +90,7 @@ RegisterNetEvent("mester_impoundgaragesPay", function(plate, garage)
     function(rewriteimpoundresult)
         end)
     TriggerClientEvent("mester_impoundNotify", source, string.format(Config.Translations[Config.Language].PaidImpoundFee, Config.Price), "success")
-    DiscordLog(string.format(Config.Translations[Config.Language].PaidImpoundFee, Config.Price) .. GetPlayerName(source) .. " (" .. source .. ")")
+    DiscordLog(string.format(Config.Translations[Config.Language].PaidImpoundFeeLog, Config.Price) .. GetPlayerName(source) .. " (" .. source .. ")")
     MySQL.Async.fetchAll(
     "SELECT * FROM "..Config.SQLGarageTable.." WHERE owner = @identifier AND plate = @plate",
     {
@@ -176,7 +176,7 @@ RegisterCommand(Config.RemoveFromImpoundGaragesCommand, function(source, args, r
             function(rewriteimpoundresult)
                 end)
             TriggerClientEvent("mester_impoundNotify", source, Config.Translations[Config.Language].RemovedFromImpound, "success")
-            DiscordLog(Config.Translations[Config.Language].RemovedFromImpoundLog .. GetPlayerName(source) .. " (" .. source .. ")")
+            DiscordLog(Config.Translations[Config.Language].RemovedFromImpoundLog .." ".. GetPlayerName(source) .. " (" .. source .. ")")
         end
     end
 end)
