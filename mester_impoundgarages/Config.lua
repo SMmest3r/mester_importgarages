@@ -48,12 +48,12 @@ function mester_impoundNotify(text, type)
 --DELETE THIS IF YOU WANT TO USE AN ANOTHER TYPE OF NOTIFICATION
 
 -----------------------------------------EXAMPLES---------------------------------------------
---exports['okokNotify']:Alert("Scrapyard", msg, 5000, type) --okok notify (PAID resource)
---TriggerEvent("mosh_UI:Open", type, msg, "right", true) --Mosh UI / Notify (PAID resource)
---exports['mythic_notify']:DoHudText(type, msg) --Mythic Notify (Free resource)
---exports["skeexsNotify"]:TriggerNotification({ ['type'] = type, ['message'] = msg }) --skeexsNotify (Free resource)
---TriggerEvent('QBCore:Notify', msg, type) --Default QBCore notifcation (Free resource - QB-Core)
---TriggerEvent('esx:showNotification', msg) --Default ESX notification (Free resource -ESX)
+--exports['okokNotify']:Alert("Scrapyard", text, 5000, type) --okok notify (PAID resource)
+--TriggerEvent("mosh_UI:Open", type, text, "right", true) --Mosh UI / Notify (PAID resource)
+--exports['mythic_notify']:DoHudText(type, text) --Mythic Notify (Free resource)
+--exports["skeexsNotify"]:TriggerNotification({ ['type'] = type, ['message'] = text }) --skeexsNotify (Free resource)
+--TriggerEvent('QBCore:Notify', text, type) --Default QBCore notifcation (Free resource - QB-Core)
+--TriggerEvent('esx:showNotification', text) --Default ESX notification (Free resource -ESX)
 ----------------------------------------------------------------------------------------------
 end
 
