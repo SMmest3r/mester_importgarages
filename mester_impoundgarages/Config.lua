@@ -15,7 +15,7 @@ Config.BlipSettings = {
 	Display = 4,
 	Scale = 0.8,
 	Colour = 3,
-	ShortRange = false,
+	ShortRange = true,
 }
 
 Config.InteractDistance = 3.0 -- Distance to interact with the impound garage
