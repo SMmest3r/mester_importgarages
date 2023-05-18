@@ -149,7 +149,7 @@ RegisterNetEvent("mester_impoundgaragesImpoundVehicle", function(plate)
             function(rewriteimpoundresult)
                 end)
             TriggerClientEvent("mester_impoundNotify", source, Config.Translations[Config.Language].ImpoundedVehicle, "success")
-            DiscordLog(Config.Translations[Config.Language].ImpoundedVehicleLog .. GetPlayerName(source) .. " (" .. source .. ")")
+            DiscordLog(Config.Translations[Config.Language].ImpoundedVehicleLog .." " .. GetPlayerName(source) .. " (" .. source .. ")")
             return
         end
     end
