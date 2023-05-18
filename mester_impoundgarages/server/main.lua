@@ -35,7 +35,7 @@ RegisterNetEvent("mester_impoundgaragesGetVehicles", function(player, garage)
     },
     function(result)
     if result[1] == nil then
-        TriggerClientEvent("mester_impoundNotify", player, Config.Translations[Config.Language].NoVehiclesInImpound, "error")
+        TriggerClientEvent("mester_impoundNotify", player, Config.Translations[Config.Language].NoVehiclesInImpound, "DANGER")
         return
         end
     local vehicles = {}
@@ -84,7 +84,7 @@ RegisterNetEvent("mester_impoundgaragesPay", function(plate, garage)
     "UPDATE "..Config.SQLGarageTable.." SET impounded = @impounded WHERE owner = @identifier AND plate = @plate",
     {
         ["@identifier"] = identifier,
-        ["@plate"] = plate,
+        ["@plate"] = tostring(plate):gsub("%s+", ""),
         ["@impounded"] = 0
     },
     function(rewriteimpoundresult)
@@ -95,7 +95,7 @@ RegisterNetEvent("mester_impoundgaragesPay", function(plate, garage)
     "SELECT * FROM "..Config.SQLGarageTable.." WHERE owner = @identifier AND plate = @plate",
     {
         ["@identifier"] = identifier,
-        ["@plate"] = plate
+        ["@plate"] = tostring(plate):gsub("%s+", "")
     },
     function(result)
         if result[1] == nil then
@@ -106,7 +106,7 @@ RegisterNetEvent("mester_impoundgaragesPay", function(plate, garage)
         TriggerClientEvent("mester_impoundgaragesSpawnVehicle", player, vehicle, garage)
         end)
     else
-        TriggerClientEvent("mester_impoundNotify", player, Config.Translations[Config.Language].NotEnoughMoney, "error")
+        TriggerClientEvent("mester_impoundNotify", player, Config.Translations[Config.Language].NotEnoughMoney, "DANGER")
     end
 end)
 
@@ -143,7 +143,7 @@ RegisterNetEvent("mester_impoundgaragesImpoundVehicle", function(plate)
             "UPDATE "..Config.SQLGarageTable.." SET impounded = @impounded WHERE owner = @identifier AND plate = @plate",
             {
                 ["@identifier"] = identifier,
-                ["@plate"] = plate,
+                ["@plate"] = tostring(plate):gsub("%s+", ""),
                 ["@impounded"] = 1
             },
             function(rewriteimpoundresult)
@@ -158,7 +158,7 @@ end)
 RegisterCommand(Config.RemoveFromImpoundGaragesCommand, function(source, args, rawCommand)
     if args[1] == nil or args[2] == nil then return end
     if GetPlayerName(args[1]) == nil then
-        TriggerClientEvent("mester_impoundNotify", source, Config.Translations[Config.Language].PlayerNotFound, "error")
+        TriggerClientEvent("mester_impoundNotify", source, Config.Translations[Config.Language].PlayerNotFound, "DANGER")
         return
     end 
     local plate = table.concat(args, " ", 2) 
@@ -170,7 +170,7 @@ RegisterCommand(Config.RemoveFromImpoundGaragesCommand, function(source, args, r
             "UPDATE "..Config.SQLGarageTable.." SET impounded = @impounded WHERE owner = @identifier AND plate = @plate",
             {
                 ["@identifier"] = identifier,
-                ["@plate"] = plate,
+                ["@plate"] = tostring(plate):gsub("%s+", ""),
                 ["@impounded"] = 0
             },
             function(rewriteimpoundresult)
