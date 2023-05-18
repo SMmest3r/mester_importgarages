@@ -10,38 +10,45 @@ if Config.Framework == "ESX" then
 end
 
 Citizen.CreateThread(function()
-if Config.ImpoundGarages == nil then
-    print("Invalid impound garage locations, please check your config")
-    return
-end
-for k, v in pairs(Config.ImpoundGarages) do
-    v = v.Coords
-  if Config.EnableBlips then
-    local blip = AddBlipForCoord(v.x, v.y, v.z)
-    SetBlipSprite(blip, Config.BlipSettings.Sprite)
-    SetBlipDisplay(blip, Config.BlipSettings.Display)
-    SetBlipScale(blip, Config.BlipSettings.Scale)
-    SetBlipColour(blip, Config.BlipSettings.Colour)
-    SetBlipAsShortRange(blip, Config.BlipSettings.ShortRange)
-    BeginTextCommandSetBlipName("STRING")
-    AddTextComponentString(Config.Translations[Config.Language].ImpoundGarage)
-    EndTextCommandSetBlipName(blip)
-    end
-    local Wait = 1500
-    while true do
-      Citizen.Wait(Wait)
-    if GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), v.x, v.y, v.z, true) < Config.InteractDistance then
-      Wait = 1
-    else
-      Wait = 1500
-    end
-    if GetDistanceBetweenCoords(GetEntityCoords(PlayerPedId()), v.x, v.y, v.z, true) < Config.InteractDistance then
-      DrawText3Ds(v.x, v.y, v.z, Config.Translations[Config.Language].ImpoundGarage3DText)
-      if IsControlJustPressed(0, Config.KeyToOpenMenu) then
-          OpenImpoundMenu(k)
-        end
+  if Config.ImpoundGarages == nil then
+      print("Invalid impound garage locations, please check your config")
+      return
+  end
+  for k, v in pairs(Config.ImpoundGarages) do
+      if Config.EnableBlips then
+          local blip = AddBlipForCoord(v.Coords.x, v.Coords.y, v.Coords.z)
+          SetBlipSprite(blip, Config.BlipSettings.Sprite)
+          SetBlipDisplay(blip, Config.BlipSettings.Display)
+          SetBlipScale(blip, Config.BlipSettings.Scale)
+          SetBlipColour(blip, Config.BlipSettings.Colour)
+          SetBlipAsShortRange(blip, Config.BlipSettings.ShortRange)
+          BeginTextCommandSetBlipName("STRING")
+          AddTextComponentString(Config.Translations[Config.Language].ImpoundGarage)
+          EndTextCommandSetBlipName(blip)
       end
-    end
+  end
+  while true do
+      Citizen.Wait(0)
+      local playerCoords = GetEntityCoords(PlayerPedId())
+      local nearestGarage = nil
+      local nearestDistance = Config.InteractDistance
+      for k, v in pairs(Config.ImpoundGarages) do
+          local garageCoords = v.Coords
+          local distance = #(playerCoords - garageCoords)
+          if distance < nearestDistance then
+              nearestDistance = distance
+              nearestGarage = k
+          end
+          if distance < Config.InteractDistance then
+              DrawText3Ds(garageCoords.x, garageCoords.y, garageCoords.z, Config.Translations[Config.Language].ImpoundGarage3DText)
+              if IsControlJustPressed(0, Config.KeyToOpenMenu) then
+                  OpenImpoundMenu(k)
+              end
+          end
+      end
+      if not nearestGarage then
+          Citizen.Wait(1500)
+      end
   end
 end)
 
